@@ -1,32 +1,32 @@
-interface Istack<T> {
+interface IStack<T>{
+    size():number;
     push(item:T):void;
     pop():T | undefined;
     peek():T | undefined;
-    size():number;
+    clear():void;
 }
 
-class CreateStack<T> implements Istack<T>{
-    private storage:T[] = [];
-    constructor(private capacity:number=Infinity){}
+class Stack<T> implements IStack<T>{
+    private storage:T[] = []
+    constructor(private capacity:number= Infinity){}
     push(item:T):void{
+        if(this.size() === this.capacity){
+            throw new Error("The storage has reached to max capacity")
+        }
         this.storage.push(item)
     }
     pop():T | undefined{
-        return this.storage.pop();
+        return this.storage.pop()
+    }
+    size():number{
+        return this.storage.length;
     }
     peek():T | undefined{
-        return this.storage[this.size() - 1]
+        const length = this.size()
+        return length > 0 ? this.storage[length - 1] : undefined
     }
-    size(): number {
-        return this.storage.length    
+    clear():void{
+        this.storage = []
     }
+
 }
-
-const newStack = new CreateStack<string>();
-newStack.push("a")
-newStack.push("b")
-console.log(newStack.size())
-console.log(newStack.peek())
-console.log(newStack.pop())
-console.log(newStack.size())
-
